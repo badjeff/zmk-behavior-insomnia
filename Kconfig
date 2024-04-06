@@ -1,0 +1,19 @@
+# Sensor data simulator
+#
+# Copyright (c) 2019 Nordic Semiconductor
+#
+# SPDX-License-Identifier: LicenseRef-Nordic-5-Clause
+#
+
+DT_COMPAT_ZMK_BEHAVIOR_INSOMNIA := zmk,behavior-insomnia
+
+config ZMK_BEHAVIOR_INSOMNIA
+		bool
+		default $(dt_compat_enabled,$(DT_COMPAT_ZMK_BEHAVIOR_INSOMNIA))
+
+config ZMK_INSOMNIA_PING_ON_START
+		bool "Default toggle state to put the shield awake from sleep"
+
+config ZMK_INSOMNIA_PING_INTERVAL
+		int "Interval (ms) to check connection to host (as a peripheral)"
+		default 15000

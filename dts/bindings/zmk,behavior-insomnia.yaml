@@ -1,0 +1,14 @@
+# Copyright (c) 2021 The ZMK Contributors
+# SPDX-License-Identifier: MIT
+
+description: insomnia behavior
+
+compatible: "zmk,behavior-insomnia"
+
+include: one_param.yaml
+
+properties:
+  sleep-delay-ms:
+    type: int
+    default: 100
+    description: "Delay to set activity mode to SLEEP after set state to IDLE"
