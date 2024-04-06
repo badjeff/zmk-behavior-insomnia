@@ -35,9 +35,6 @@ And update `shield.conf` on *peripheral shield*.
 ```
 CONFIG_ZMK_SLEEP=y
 
-# enable insomnia on peripheral shield
-CONFIG_ZMK_INSOMNIA=y
-
 # go to sleep ONLY AFTER 16 seconds on disconnected to central
 # central disconnection imply that it just fall asleep.
 CONFIG_ZMK_IDLE_SLEEP_TIMEOUT=16000
@@ -46,7 +43,7 @@ CONFIG_ZMK_IDLE_SLEEP_TIMEOUT=16000
 CONFIG_ZMK_INSOMNIA_PING_INTERVAL=15000
 
 # enable insomnia on boot, and after wakeup
-# apply this on peripheral side to make it sleep if and on if central is inactive or sleeping.
+# apply this on peripheral side to make it sleep if and only if central is inactive or sleeping.
 CONFIG_ZMK_INSOMNIA_PING_ON_START=y
 ```
 
