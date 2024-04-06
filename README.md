@@ -42,13 +42,11 @@ CONFIG_ZMK_INSOMNIA=y
 # central disconnection imply that it just fall asleep.
 CONFIG_ZMK_IDLE_SLEEP_TIMEOUT=16000
 
-# set a ping before attempting to sleep (minus 1 second, 1000ms)
-CONFIG_ZMK_INSOMNIA_PING_INTERVAL=15000
-
 # set a ping before attempting to sleep AFTER 15 (minus 1 second, 1000ms)
 CONFIG_ZMK_INSOMNIA_PING_INTERVAL=15000
 
-# enable insomnia on boot, or after wakeup
+# enable insomnia on boot, and after wakeup
+# apply this on peripheral side to make it sleep if and on if central is inactive or sleeping.
 CONFIG_ZMK_INSOMNIA_PING_ON_START=y
 ```
 
