@@ -57,9 +57,10 @@ Also, update 'shield.keymap' if want manual control
         &isa {
             /*
               Set delay before heading to sleep.
-              e.g. To allow LED / e-ink display to clear the screen before power down
+              e.g. To allow LED / e-ink display to clear the screen before power down,
+                   and has time to flush ongoing key_release event.
             */
-            sleep-delay-ms = <200>;
+            sleep-delay-ms = <1500>;
         };
     };
 

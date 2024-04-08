@@ -3,7 +3,7 @@
         /omit-if-no-ref/ isa: insomnia {
             compatible = "zmk,behavior-insomnia";
             #binding-cells = <1>;
-            sleep-delay-ms = <200>;
+            sleep-delay-ms = <1500>;
         };
     };
 };
