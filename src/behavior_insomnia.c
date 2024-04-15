@@ -47,6 +47,13 @@ struct behavior_insomnia_data {
 static void insomnia_sleep_work_handler(struct k_work *work) {
     LOG_DBG("set state to ZMK_ACTIVITY_SLEEP");
     set_state(ZMK_ACTIVITY_SLEEP);
+
+#if !IS_ENABLED(CONFIG_ZMK_SPLIT) || IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)
+    zmk_endpoints_clear_current();
+    // Need to sleep to give any other threads a chance so submit endpoint data.
+    k_sleep(K_MSEC(100));
+#endif
+
     if (zmk_pm_suspend_devices() < 0) {
         LOG_ERR("Failed to suspend all the devices");
         zmk_pm_resume_devices();
