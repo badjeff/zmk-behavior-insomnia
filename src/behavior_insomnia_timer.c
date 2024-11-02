@@ -15,9 +15,7 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #define INSOMNIA_TIMER_K_MSEC K_MSEC(CONFIG_ZMK_INSOMNIA_PING_INTERVAL)
 
-// #include <zmk/event_manager.h>
-#include <zmk/activity.h>
-int set_state(enum zmk_activity_state state);
+#include <zmk/events/sensor_event.h>
 
 #if (IS_ENABLED(CONFIG_ZMK_SPLIT) && !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL))
 
@@ -38,7 +36,12 @@ bool zmk_ble_active_profile_is_connected(void);
 void insomnia_timer_work_handler(struct k_work *work) {
     if (INSOMNIA_KEEP_AWAKE_FN()) {
         LOG_DBG("emit activity event");
-        set_state(ZMK_ACTIVITY_ACTIVE);
+        raise_zmk_sensor_event(
+            (struct zmk_sensor_event){.sensor_index = UINT8_MAX,
+                                    .channel_data_size = 1,
+                                    .channel_data = {(struct zmk_sensor_channel_data){
+                                        .channel = SENSOR_CHAN_GAUGE_STATE_OF_CHARGE}},
+                                    .timestamp = k_uptime_get()});
     }
 }
 

@@ -4,7 +4,7 @@ This a module can keep the board awake if BLE is connected. It is used to postpo
 
 ## What it does
 
-It run a timer in background, which ping `activity_event_listener` after check the shield is connected to a host.
+It run a timer in background, which ping with a `raise_zmk_sensor_event` after check the shield is connected to a host.
 - If enabling on split peripheral, it checks connection state via `bool zmk_split_bt_peripheral_is_connected(void)`.
 - If enabling on central, it checks connection state via `bool zmk_ble_active_profile_is_connected(void)`.
 
