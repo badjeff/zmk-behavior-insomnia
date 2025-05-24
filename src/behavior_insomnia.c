@@ -90,6 +90,19 @@ static int on_insomnia_binding_pressed(struct zmk_behavior_binding *binding,
             insomnia_timer_set_active(true);
         }
         break;
+    }
+
+    return ZMK_BEHAVIOR_OPAQUE;
+}
+
+static int on_insomnia_binding_released(struct zmk_behavior_binding *binding,
+                                        struct zmk_behavior_binding_event event) {
+    const struct device *dev = zmk_behavior_get_binding(binding->behavior_dev);
+    struct behavior_insomnia_data *data = dev->data;
+    const struct behavior_insomnia_config *config = dev->config;
+
+    bool is_active = insomnia_timer_get_active();
+    switch (binding->param1) {
         case INSOMNIA_SLEEP_CMD:
         LOG_DBG("INSOMNIA_SLEEP_CMD");
         if (is_active) {
@@ -100,11 +113,6 @@ static int on_insomnia_binding_pressed(struct zmk_behavior_binding *binding,
         break;
     }
 
-    return ZMK_BEHAVIOR_OPAQUE;
-}
-
-static int on_insomnia_binding_released(struct zmk_behavior_binding *binding,
-                                        struct zmk_behavior_binding_event event) {
     return ZMK_BEHAVIOR_OPAQUE;
 }
 
