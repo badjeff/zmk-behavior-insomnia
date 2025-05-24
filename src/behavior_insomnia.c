@@ -46,6 +46,40 @@ struct behavior_insomnia_data {
     struct k_work_delayable insomnia_sleep_work;
 };
 
+#if IS_ENABLED(CONFIG_ZMK_BEHAVIOR_METADATA)
+
+static const struct behavior_parameter_value_metadata no_arg_values[] = {
+    {
+        .display_name = "Turn On",
+        .type = BEHAVIOR_PARAMETER_VALUE_TYPE_VALUE,
+        .value = INSOMNIA_ON_CMD,
+    },
+    {
+        .display_name = "Turn OFF",
+        .type = BEHAVIOR_PARAMETER_VALUE_TYPE_VALUE,
+        .value = INSOMNIA_OFF_CMD,
+    },
+    {
+        .display_name = "Sleep Immediately",
+        .type = BEHAVIOR_PARAMETER_VALUE_TYPE_VALUE,
+        .value = INSOMNIA_SLEEP_CMD,
+    },
+};
+
+static const struct behavior_parameter_metadata_set no_args_set = {
+    .param1_values = no_arg_values,
+    .param1_values_len = ARRAY_SIZE(no_arg_values),
+};
+
+static const struct behavior_parameter_metadata_set sets[] = { no_args_set };
+
+static const struct behavior_parameter_metadata metadata = {
+    .sets_len = ARRAY_SIZE(sets),
+    .sets = sets,
+};
+
+#endif // IS_ENABLED(CONFIG_ZMK_BEHAVIOR_METADATA)
+
 static void insomnia_sleep_work_handler(struct k_work *work) {
     LOG_DBG("set state to ZMK_ACTIVITY_SLEEP");
     set_state(ZMK_ACTIVITY_SLEEP);
@@ -120,6 +154,9 @@ static const struct behavior_driver_api behavior_insomnia_driver_api = {
     .binding_pressed = on_insomnia_binding_pressed,
     .binding_released = on_insomnia_binding_released,
     .locality = BEHAVIOR_LOCALITY_EVENT_SOURCE,
+#if IS_ENABLED(CONFIG_ZMK_BEHAVIOR_METADATA)
+    .parameter_metadata = &metadata,
+#endif
 };
 
 static const struct device *devs[DT_NUM_INST_STATUS_OKAY(DT_DRV_COMPAT)];
