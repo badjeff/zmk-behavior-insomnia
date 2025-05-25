@@ -105,10 +105,6 @@ static void insomnia_idle_work_handler(struct k_work *work) {
 
 static int on_insomnia_binding_pressed(struct zmk_behavior_binding *binding,
                                        struct zmk_behavior_binding_event event) {
-    const struct device *dev = zmk_behavior_get_binding(binding->behavior_dev);
-    struct behavior_insomnia_data *data = dev->data;
-    const struct behavior_insomnia_config *config = dev->config;
-
     bool is_active = insomnia_timer_get_active();
     switch (binding->param1) {
         case INSOMNIA_OFF_CMD:
