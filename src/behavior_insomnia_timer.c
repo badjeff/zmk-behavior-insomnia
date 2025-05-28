@@ -17,23 +17,20 @@ LOG_MODULE_DECLARE(zmk, CONFIG_ZMK_LOG_LEVEL);
 
 #include <zmk/events/sensor_event.h>
 
-#if (IS_ENABLED(CONFIG_ZMK_SPLIT) && !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL))
-
-// split peripheral
-bool zmk_split_bt_peripheral_is_connected(void);
-#define INSOMNIA_KEEP_AWAKE_FN zmk_split_bt_peripheral_is_connected
-
-#endif /* (IS_ENABLED(CONFIG_ZMK_SPLIT) && !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)) */
-
-#ifndef INSOMNIA_KEEP_AWAKE_FN
-
-// split central or uni-body sheild
+// for ble split central, or ble uni-body
+#if (IS_ENABLED(CONFIG_ZMK_BLE) && IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL))
 bool zmk_ble_active_profile_is_connected(void);
 #define INSOMNIA_KEEP_AWAKE_FN zmk_ble_active_profile_is_connected
+#endif
 
-#endif /* not defined INSOMNIA_KEEP_AWAKE_FN */
+// for ble split peripheral
+#if (IS_ENABLED(CONFIG_ZMK_BLE) && IS_ENABLED(CONFIG_ZMK_SPLIT_BLE) && !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL))
+bool zmk_split_bt_peripheral_is_connected(void);
+#define INSOMNIA_KEEP_AWAKE_FN zmk_split_bt_peripheral_is_connected
+#endif /* (IS_ENABLED(CONFIG_ZMK_SPLIT_BLE) && !IS_ENABLED(CONFIG_ZMK_SPLIT_ROLE_CENTRAL)) */
 
 void insomnia_timer_work_handler(struct k_work *work) {
+#ifdef INSOMNIA_KEEP_AWAKE_FN
     if (INSOMNIA_KEEP_AWAKE_FN()) {
         LOG_DBG("emit activity event");
         raise_zmk_sensor_event(
@@ -43,6 +40,7 @@ void insomnia_timer_work_handler(struct k_work *work) {
                                         .channel = SENSOR_CHAN_GAUGE_STATE_OF_CHARGE}},
                                     .timestamp = k_uptime_get()});
     }
+#endif
 }
 
 K_WORK_DEFINE(insomnia_timer_work, insomnia_timer_work_handler);
